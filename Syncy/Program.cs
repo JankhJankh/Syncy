@@ -6,9 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-
 namespace Syncy
 {
+    public static class Configs
+    {
+        public static int Uptime = 5000;
+        public static int Downtime = 25000;
+    }
     class Program
     {
         static void Main(string[] args)
@@ -86,99 +90,99 @@ namespace Syncy
             {
                 if (browser == "All")
                 {
-                    close_firefox();
-                    zip_firefox();
-                    close_edge();
-                    zip_edge();
-                    close_chrome();
-                    zip_chrome();
+                    Firefox.close_firefox();
+                    Firefox.zip_firefox();
+                    Edge.close_edge();
+                    Edge.zip_edge();
+                    Chrome.close_chrome();
+                    Chrome.zip_chrome();
                 }
                 else if (browser == "Firefox")
                 {
-                    close_firefox();
-                    zip_firefox();
+                    Firefox.close_firefox();
+                    Firefox.zip_firefox();
                 }
                 else if (browser == "Edge")
                 {
-                    close_edge();
-                    zip_edge();
+                    Edge.close_edge();
+                    Edge.zip_edge();
                 }
                 else if (browser == "Chrome")
                 {
-                    close_chrome();
-                    zip_chrome();
+                    Chrome.close_chrome();
+                    Chrome.zip_chrome();
                 }
             }
             else if (action == "Unzip")
             {
                 if (browser == "All")
                 {
-                    close_firefox();
-                    unzip_firefox();
-                    close_edge();
-                    unzip_edge();
-                    close_chrome();
-                    unzip_chrome();
+                    Firefox.close_firefox();
+                    Firefox.unzip_firefox();
+                    Edge.close_edge();
+                    Edge.unzip_edge();
+                    Chrome.close_chrome();
+                    Chrome.unzip_chrome();
                 }
                 else if (browser == "Firefox")
                 {
-                    close_firefox();
-                    unzip_firefox();
+                    Firefox.close_firefox();
+                    Firefox.unzip_firefox();
                 }
                 else if (browser == "Edge")
                 {
-                    close_edge();
-                    unzip_edge();
+                    Edge.close_edge();
+                    Edge.unzip_edge();
                 }
                 else if (browser == "Chrome")
                 {
-                    close_chrome();
-                    unzip_chrome();
+                    Chrome.close_chrome();
+                    Chrome.unzip_chrome();
                 }
             }
             else if (action == "RunOnce")
             {
                 if (browser == "All")
                 {
-                    loop_firefox();
-                    loop_edge();
-                    loop_chrome();
+                    Firefox.loop_firefox();
+                    Edge.loop_edge();
+                    Chrome.loop_chrome();
                 }
                 else if (browser == "Firefox")
                 {
-                    loop_firefox();
+                    Firefox.loop_firefox();
                 }
                 else if (browser == "Edge")
                 {
-                    loop_edge();
+                    Edge.loop_edge();
                 }
                 else if (browser == "Chrome")
                 {
-                    loop_chrome();
+                    Chrome.loop_chrome();
                 }
             }
             else if (action == "Loop")
             {
                 while (true)
                 {
-                    wait(10000);
+                    wait(Configs.Downtime);
                     if (browser == "All")
                     {
-                        loop_firefox();
-                        loop_edge();
-                        loop_chrome();
+                        Firefox.loop_firefox();
+                        Edge.loop_edge();
+                        Chrome.loop_chrome();
                     }
                     else if (browser == "Firefox")
                     {
-                        loop_firefox();
+                        Firefox.loop_firefox();
                     }
                     else if (browser == "Edge")
                     {
-                        loop_edge();
+                        Edge.loop_edge();
                     }
                     else if (browser == "Chrome")
                     {
-                        loop_chrome();
+                        Chrome.loop_chrome();
                     }
                 }
             }
@@ -186,42 +190,42 @@ namespace Syncy
             {
                 if (browser == "All")
                 {
-                    start_firefox();
-                    start_edge();
-                    start_chrome();
+                    Firefox.start_firefox();
+                    Edge.start_edge();
+                    Chrome.start_chrome();
                 }
                 else if (browser == "Firefox")
                 {
-                    start_firefox();
+                    Firefox.start_firefox();
                 }
                 else if (browser == "Edge")
                 {
-                    start_edge();
+                    Edge.start_edge();
                 }
                 else if (browser == "Chrome")
                 {
-                    start_chrome();
+                    Chrome.start_chrome();
                 }
             }
             else if (action == "Stop")
             {
                 if (browser == "All")
                 {
-                    close_firefox();
-                    close_edge();
-                    close_chrome();
+                    Firefox.close_firefox();
+                    Edge.close_edge();
+                    Chrome.close_chrome();
                 }
                 else if (browser == "Firefox")
                 {
-                    close_firefox();
+                    Firefox.close_firefox();
                 }
                 else if (browser == "Edge")
                 {
-                    close_edge();
+                    Edge.close_edge();
                 }
                 else if (browser == "Chrome")
                 {
-                    close_chrome();
+                    Chrome.close_chrome();
                 }
             }
             else
@@ -244,279 +248,12 @@ namespace Syncy
             return;
         }
 
-        static void unzip_firefox()
-        {
-            //To decompress files out of a zip archive:  
-            Console.WriteLine("Writing Firefox preference to: " + get_firefoxsync_path());
-            try
-            {
-                using (var zipFile = new ZipFile(@".\FirefoxSync.zip"))
-                {
-                    zipFile.ExtractAll(get_firefoxsync_path(), ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unzipping Firefox failed, make sure the process isn't running in the background.");
-            }
-}
-
-        static void zip_firefox()
-        {
-            Console.WriteLine("Zipping Firefox preference to the current directory");
-            //To compress files out of a zip archive:  
-            try
-            {
-                using (ZipFile zip = new ZipFile())
-                {
-                    zip.AddDirectory(get_firefoxsync_path());
-                    zip.Save(@".\FirefoxSync.zip");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Zipping Firefox failed, make sure the process isn't running in the background.");
-            }
-        }
-
-        static void loop_firefox()
-        {
-            wait(3000);
-            start_firefox();
-            wait(10000);
-            close_firefox();
-            check_for_killnote_firefox();
-        }
-
-        static void start_firefox() 
-        {
-            try
-            {
-                String firefoxLocation = @"C:\Program Files\Mozilla Firefox\Firefox.exe";
-                if (!File.Exists(firefoxLocation))
-                {
-                    firefoxLocation = @"C:\Program Files (x86)\Mozilla Firefox\Firefox.exe";
-                }
-                Console.WriteLine("Spawning process: " + firefoxLocation + " --profile " + get_firefoxsync_path());
-                using (Process process = Process.Start(firefoxLocation, "--profile " + get_firefoxsync_path()))
-                {
-                    process.WaitForInputIdle();
-                    Console.WriteLine(process.Id);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Starting Firefox failed, make sure the process is installed.");
-            }
-}
-        static void close_firefox()
-        {
-            string proc = "FIREFOX";
-            Process[] processes = Process.GetProcesses();
-            var pc = from p in processes
-                     where p.ProcessName.ToUpper().Contains(proc)
-                     select p;
-            foreach (var item in pc)
-            {
-                item.CloseMainWindow();
-            }
-        }
-
-        static string get_firefoxsync_path()
-        {
-            return @"C:\Users\" + get_username() + @"\AppData\Local\Mozilla\Firefox\Profiles\FirefoxSync";
-        }
-
-        static void unzip_edge()
-        {
-            //To decompress files out of a zip archive:  
-            Console.WriteLine("Writing Edge preference to: " + get_edgesync_path());
-            try
-            {
-                using (var zipFile = new ZipFile(@".\EdgeSync.zip"))
-                {
-                    zipFile.ExtractAll(get_edgesync_path(), ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unzipping Edge failed, make sure the process isn't running in the background.");
-            }
-        }
-
-        static void zip_edge()
-        {
-            Console.WriteLine("Zipping Edge preference to the current directory");
-            try
-            {
-                //To compress files out of a zip archive:  
-                using (ZipFile zip = new ZipFile())
-                {
-                    zip.AddDirectory(get_edgesync_path());
-                    zip.Save(@".\EdgeSync.zip");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Zipping Edge failed, make sure the process isn't running in the background.");
-            }
-        }
-
-        static void loop_edge()
-        {
-            wait(3000);
-            start_edge();
-            wait(10000);
-            close_edge();
-            check_for_killnote_edge();
-        }
-        static void start_edge()
-        {
-            try
-            {
-                string path = get_edgesync_path() + @"\Preferences";
-                string readText = File.ReadAllText(path);
-                readText = readText.Replace("\"exit_type\":\"Crashed\"", "\"exit_type\":\"Normal\"");
-                File.WriteAllText(path, readText);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed to modify Edgesync config");
-            }
-            try
-            {
-                Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "--profile-directory=EdgeSync");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Starting Edge failed, make sure the process is installed.");
-            }
-
-        }
-
-        static void close_edge()
-        {
-            string proc = "MSEDGE";
-            Process[] processes = Process.GetProcesses();
-            var pc = from p in processes
-                     where p.ProcessName.ToUpper().Contains(proc)
-                     select p;
-            foreach (var item in pc)
-            {
-                item.CloseMainWindow();
-            }
-        }
-
-        static string get_edgesync_path()
-        {
-            return @"C:\Users\" + get_username() + @"\AppData\Local\Microsoft\Edge\User Data\EdgeSync";
-        }
-
-        static void unzip_chrome()
-        {
-            Console.WriteLine("Writing Chrome preference to: " + get_chromesync_path());
-            try
-            {
-                using (var zipFile = new ZipFile(@".\ChromeSync.zip"))
-                {
-                    zipFile.ExtractAll(get_chromesync_path(), ExtractExistingFileAction.OverwriteSilently);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Unzipping Chrome failed, make sure the process isn't running in the background.");
-            }
-
-        }
-
-        static void zip_chrome()
-        {
-            Console.WriteLine("Zipping Chrome preference to the current directory");
-            //To compress files out of a zip archive:  
-            try
-            {
-                using (ZipFile zip = new ZipFile())
-                {
-                    zip.AddDirectory(get_chromesync_path());
-                    zip.Save(@".\ChromeSync.zip");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Zipping Chrome failed, make sure the process isn't running in the background.");
-            }
-
-        }
-
-        static void loop_chrome()
-        {
-            wait(3000);
-            start_chrome();
-            wait(10000);
-            close_chrome();
-            check_for_killnote_chrome();
-        }
-        static void start_chrome()
-        {
-            try
-            {
-                string path = get_chromesync_path() + @"\Preferences";
-                string readText = File.ReadAllText(path);
-                readText = readText.Replace("\"exit_type\":\"Crashed\"", "\"exit_type\":\"Normal\"");
-                File.WriteAllText(path, readText);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Failed to modify Chromesync file.");
-                Console.WriteLine(e);
-            }
-            try
-            {
-                String chromeLocation = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
-                if (!File.Exists(chromeLocation))
-                {
-                    chromeLocation = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
-                }
-                Process.Start(chromeLocation, "--profile-directory=ChromeSync");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Starting Chrome failed, make sure it's installed.");
-            }
-        }
-        static void close_chrome()
-        {
-            string proc = "CHROME";
-            Process[] processes = Process.GetProcesses();
-            var pc = from p in processes
-                     where p.ProcessName.ToUpper().Contains(proc)
-                     select p;
-            foreach (var item in pc)
-            {
-                item.CloseMainWindow();
-            }
-            wait(3000);
-            processes = Process.GetProcesses();
-            pc = from p in processes
-                     where p.ProcessName.ToUpper().Contains(proc)
-                     select p;
-            foreach (var item in pc)
-            {
-                item.Kill();
-            }
-        }
-        static string get_chromesync_path()
-        {
-            return @"C:\Users\" + get_username() + @"\AppData\Local\Google\Chrome\User Data\ChromeSync";
-        }
-
-
-        static void wait(int time)
+        public static void wait(int time)
         {
             System.Threading.Thread.Sleep(time);
         }
 
-        static void run_and_log_output(String filename, String arguments)
+        public static void run_and_log_output(String filename, String arguments)
         {
             Process process = new Process();
             process.StartInfo.FileName = filename;
@@ -533,52 +270,24 @@ namespace Syncy
             process.WaitForExit();
         }
 
-        static string get_username()
+        public static string get_username()
         {
             return Environment.UserName;
         }
 
-        static void check_for_killnote_chrome()
-        {
-            //Check for killnote
-            string path = get_chromesync_path() + @"\Secure Preferences";
-            string readText = File.ReadAllText(path);
-            string pattern = "SUPERSECRETKILLCODE";
-            if (readText.ToUpper().Contains(pattern))
-            {
-                kill();
-            }
-        }
 
-
-        static void check_for_killnote_firefox()
-        {
-            //Check for killnote
-            string path = get_firefoxsync_path() + @"\prefs.js";
-            string readText = File.ReadAllText(path);
-            string pattern = "SUPERSECRETKILLCODE";
-            if (readText.ToUpper().Contains(pattern))
-            {
-                kill();
-            }
-        }
-
-        static void check_for_killnote_edge()
-        {
-            //Check for killnote
-            string path = get_edgesync_path() + @"\Secure Preferences";
-            string readText = File.ReadAllText(path);
-            string pattern = "SUPERSECRETKILLCODE";
-            if (readText.ToUpper().Contains(pattern))
-            {
-                kill();
-            }
-
-        }
-        static void kill()
+        public static void kill()
         {   
             Console.Write("Kill Received");
             System.Environment.Exit(1); 
         }
+
+        public static void spawn_process(String processloc, String processparams)
+        {
+            //This is used to log the process locations, and let you know when a browser is spawned very handy for debugging.
+            Console.WriteLine("Spawning process: " + processloc + " " + processparams);
+            Process.Start(processloc, processparams);
+        }
     }
 }
+

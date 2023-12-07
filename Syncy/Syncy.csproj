@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="ArgumentParserResult.cs" />
     <Compile Include="ArgumentParser.cs" />
+    <Compile Include="Chrome.cs" />
+    <Compile Include="Edge.cs" />
+    <Compile Include="Firefox.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

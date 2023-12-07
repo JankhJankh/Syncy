@@ -1,0 +1,12 @@
+{
+  "name": "Syncy",
+  "description": "Sample Extension For Syncy",
+  "version": "1.0",
+  "content_scripts": [
+  	{
+  	"js": ["main.js"],
+	"matches": ["<all_urls>"]
+	}
+  ],
+  "manifest_version": 2
+}
