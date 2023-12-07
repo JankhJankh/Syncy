@@ -1,6 +1,7 @@
 
 # Syncy
 A tool to periodically interact remotely with browsers using cloud-sync.
+Currently supports Firefox, Chrome, and Edge. With automatic loading in Firefox, and persistent developer extensions in Chrome and Edge.
 
 ## Setup:
 
