@@ -42,4 +42,4 @@ From this you can test all the techniques from the whitepaper, the link to which
 To kill Syncy, submit a start URL in any browser with "SUPERSECRETKILLCODE" anywhere in it. This can also be changed at compile time.
 
 ## Disclaimer
-This tool is built for automated testing of browser sync.
+This tool is built for automated testing of browser sync, as such, it does not support any malicious activity by default.
