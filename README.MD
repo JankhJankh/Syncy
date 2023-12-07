@@ -3,7 +3,7 @@
 A tool to periodically interact remotely with browsers using cloud-sync.
 
 
-# How to use:
+## How to use:
 Run Syncy and start whatever browsers you want to enroll in sync:
 ```
 .\Syncy.exe Start All
@@ -37,5 +37,5 @@ From this you can test all the techniques from the whitepaper, the link to which
 
 To kill Syncy, submit a start URL in any browser with "SUPERSECRETKILLCODE" anywhere in it. This can also be changed at compile time.
 
-
+## Disclaimer
 This tool is built for automated testing of browser sync.
