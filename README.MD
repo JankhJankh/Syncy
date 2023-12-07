@@ -4,7 +4,7 @@ A tool to periodically interact remotely with browsers using cloud-sync.
 
 ## Setup:
 
-Compile it yourself. I reccomend VS19 as it will compile for default Windows.Net
+Compile it yourself. I reccomend VS19 as it will compile for default Windows .Net versions.
 
 ## How to use:
 Run Syncy and start whatever browsers you want to enroll in sync:
